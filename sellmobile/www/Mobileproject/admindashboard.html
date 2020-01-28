@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Admin Dashboard</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="">
+    <style>
+    .heading1{
+		width: 100%;
+		text-align: center;
+	}
+    </style>
+    </head>
+    <body>
+        <div class="heading1">
+            <h1>All the Post on Map</h1>
+            <a href="admin.html">Logout</a>
+        </div>
+       <div>
+        <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">User</th>
+                <th scope="col">Created_at</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody id="user">
+            </tbody>
+        </table>
+       </div>
+       <div>
+        <table class="table">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Mobile Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Condition</th>
+                <th scope="col">CPU</th>
+                <th scope="col">Ram</th>
+                <th scope="col">Weight</th>
+                <th scope="col">OS</th>
+                <th scope="col">GPU</th>
+                <th scope="col">latitude</th>
+                <th scope="col">longitude</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody id="post">
+            </tbody>
+        </table>
+       </div>
+        <script>
+        $( document ).ready(function() {
+            getUserdata()
+            getPostdata()
+        })
+
+        function getUserdata(){
+        var newAPI = "http://localhost/mobilesell/viewalluser.php"
+            $.getJSON( newAPI)
+        .done(function( data) {
+            console.log(data)
+            var user = document.getElementById("user")
+            if(data.length > 0){
+                for(d in data){
+                    user.innerHTML += '<tr><th scope="row">'+data[d]['id']+"</th><td>"+data[d]['username']+"</td><td>"+data[d]['created_at']+"</td><td><a href='#' onClick='deleteUserData("+data[d]['id']+")'>Delete</a>"+'</td></tr>' 
+                }
+            }else{
+                alert("No has done bidding on this post.")
+            }
+        });
+        }
+
+        function getPostdata(){
+            var newAPI = "http://localhost/mobilesell/viewallpost.php"
+            $.getJSON( newAPI)
+        .done(function( data) {
+            var user = document.getElementById("post")
+            if(data.length > 0){
+                for(d in data){
+                    user.innerHTML += '<tr><th scope="row">'+data[d]['id']+"</th><td>"+data[d]['mobile_name']+"</td><td>"+data[d]['price']+"</td><td>"+data[d]['condition1']+"</td><td>"+data[d]['cpu']+"</td><td>"+data[d]['ram']+"</td><td>"+data[d]['weight']+"</td><td>"+data[d]['os']+"</td><td>"+data[d]['gpu']+"</td><td>"+data[d]['latitude']+"</td><td>"+data[d]['longitude']+"</td><td><a href='#' onClick='deletePostData("+data[d]['id']+")'>Delete</a>"+'</td></tr>' 
+                }
+            }else{
+                alert("No has done bidding on this post.")
+            }
+        });
+        }
+
+        function deleteUserData(id){
+           $.get("http://localhost/mobilesell/deleteuser.php?id="+id)
+           .then(
+               function(data){
+                   location.reload()
+               }
+           )
+        }
+        function deletePostData(id){
+            $.get("http://localhost/mobilesell/deletepost.php?id="+id)
+           .then(
+               function(data){
+                   location.reload()
+               }
+           )
+
+        }
+        </script>
+    </body>
+</html>

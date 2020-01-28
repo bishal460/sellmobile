@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Mobile Sell</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class='login'>
+  <div class='login_title'>
+    <span>One Step to create your account</span>
+  </div>
+  <form>
+  <div class='login_fields'>
+    <div class='login_fields__user'>
+      <div class='icon'>
+        <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/user_icon_copy.png'>
+      </div>
+      <input placeholder='Email' name="username" id='username' type='text'>
+        <div class='validation'>
+          <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/tick.png'>
+        </div>
+      </input>
+    </div>
+    <div class='login_fields__password'>
+      <div class='icon'>
+        <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/lock_icon_copy.png'>
+      </div>
+      <input placeholder='Password' id='password' name='password' type='password'>
+      <div class='validation'>
+        <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/tick.png'>
+      </div>
+    </div>
+    <div class='login_fields__submit'>
+      <input type='submit' id='onSubmit' value='SignUP'>
+      <div class='forgot'>
+        <a href='index.html'>Log In here...</a>
+      </div>
+    </div>
+  </div>
+  <f/orm>
+  <div class='success'>
+    <h2>Authentication Success</h2>
+    <p>Welcome back</p>
+  </div>
+  
+</div>
+<div class='authent'>
+  <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/puff.svg'>
+  <p>Authenticating...</p>
+</div>
+
+<script type="text/javascript">
+  document.getElementById("onSubmit").addEventListener("click",function(e) {
+    var username1 = document.getElementById("username").value
+    var password1 = document.getElementById("password").value
+
+    if(username1 == ""){
+      alert("Please provide username")
+      e.preventDefault()
+      return
+    }
+
+    if(password1 == ""){
+      alert("Please provide password")
+      e.preventDefault()
+      return
+    }
+
+    var data1 ={
+                              username : username1,
+                              password : password1
+                            }
+
+    var formdata = new FormData()
+                            for(x in data1){
+                                formdata.append(x,data1[x])
+                            }
+                            $.ajax(
+      {
+        url: 'http://localhost/mobilesell/signup.php',
+        method:'POST',
+        contentType:false,
+        processData:false, // for all type files it should be false otherwise application/json
+        data: formdata,   // JSON.stringify(data)
+        dataType:'json',
+        success: (data,status,jqxHR)=>{
+          if(data == "done"){
+            alert("Success creating new user")
+            window.location.href = "index.html"
+          }else{
+            alert("Error creating new user")
+          }
+        },
+        error : (result)=>{
+          console.log(result)
+        }
+      }
+    )          
+
+    e.preventDefault()
+  })
+
+</script>
+
+</body>
+</html>
